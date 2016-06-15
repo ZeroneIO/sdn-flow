@@ -1,0 +1,17 @@
+# Local build binaries
+.DS_Store
+target/
+dbflow/
+# Eclipse files
+.classpath
+.project
+.settings/
+# VS Code settings
+.vscode
+# Emacs backup files
+*~
+*#
+.#*
+# log files
+*.log
+log/*

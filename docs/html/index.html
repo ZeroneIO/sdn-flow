@@ -1,0 +1,632 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>SDN Flow Control</title>
+    <style type="text/css">
+      body { 
+	font-family: Trebuchet MS, sans-serif;
+	font-size: 15px;
+	color: #444;
+	margin-right: 24px;
+}
+
+h1	{
+	font-size: 25px;
+}
+h2	{
+	font-size: 20px;
+}
+h3	{
+	font-size: 16px;
+	font-weight: bold;
+}
+hr	{
+	height: 1px;
+	border: 0;
+	color: #ddd;
+	background-color: #ddd;
+	display: none;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  margin-left: 20px;
+}
+
+.method-notes	{
+	margin: 10px 0 20px 0;
+	font-size: 90%;
+	color: #555;
+}
+
+pre {
+  padding: 10px;
+  margin-bottom: 2px;
+}
+
+.http-method {
+ text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge	{
+	color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+code {
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+width: 700px;
+padding: 0 0 0 60px;
+color: #777;
+font-weight: bold;
+}
+
+.param-enum {
+width: 700px;
+padding: 0 0 0 80px;
+color: #777;
+font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items	{
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+    </style>
+  </head>
+  <body>
+  <h1>SDN Flow Control</h1>
+    <div class="app-desc">Flow control and traffice monitor for SDN (Open vSwitch) platform.  ## Limits  ## Functions  ## Structure  ### The response  #### DATA  ### JSONP </div>
+    <div class="app-desc">Version: v1.2</div>
+    <div class="app-desc">BasePath:/g/v1</div>
+    <div class="license-info">All rights reserved</div>
+  <h2>Access</h2>
+    <ol>
+      <li>OAuth AuthorizationUrl:https://zerone.io/oauth/authorize/?client_id&#x3D;CLIENT-ID&amp;redirect_uri&#x3D;REDIRECT-URI&amp;response_type&#x3D;tokenTokenUrl:</li>
+      <li>APIKey KeyParamName:access_token KeyInQuery:true KeyInHeader:false</li>
+    </ol>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h2>Table of Contents </h2>
+  <div class="method-summary"></div>
+  <ol>
+  <li><a href="#containerCidGet"><code><span class="http-method">get</span> /container/{cid}</code></a></li>
+  <li><a href="#containerCidNetsetPost"><code><span class="http-method">post</span> /container/{cid}/netset</code></a></li>
+  <li><a href="#containerNetsetPost"><code><span class="http-method">post</span> /container/netset</code></a></li>
+  <li><a href="#containerPost"><code><span class="http-method">post</span> /container</code></a></li>
+  <li><a href="#hostIpGet"><code><span class="http-method">get</span> /host/{ip}</code></a></li>
+  <li><a href="#hostNetsetPost"><code><span class="http-method">post</span> /host/netset</code></a></li>
+  <li><a href="#hostPost"><code><span class="http-method">post</span> /host</code></a></li>
+  </ol>
+
+  <div class="method"><a name="containerCidGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /container/{cid}</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">containerCidGet</span>)</div>
+    <div class="method-notes">Query the bandwidth allocation and QoS settings of a container </div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cid (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; The docker container identifier number </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">interval (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; 查询时间间隔 </div><div class="param">count (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; 返回结果个数 </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#ContianerStats">ContianerStats</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    The ContainerStats object
+        <a href="#ContianerStats">ContianerStats</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="containerCidNetsetPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /container/{cid}/netset</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">containerCidNetsetPost</span>)</div>
+    <div class="method-notes">动态设置容器带宽和QoS</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cid (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; The docker container identifier number </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">netset (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; 动态设置某个container的带宽 </div>
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#NetsetRsp">NetsetRsp</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    The NetsetRsp object with errcode &#x3D;&#x3D; &#39;0&#39; 
+        <a href="#NetsetRsp">NetsetRsp</a>
+    <h4 class="field-label">0</h4>
+    The NetsetRsp object with errcode !&#x3D; &#39;0&#39; | errcode &#x3D;&#x3D; &#39;{error message}&#39; 
+        <a href="#NetsetRsp">NetsetRsp</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="containerNetsetPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /container/netset</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">containerNetsetPost</span>)</div>
+    <div class="method-notes">动态设置容器带宽和QoS</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">netset (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; 动态设置某个container的带宽 </div>
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#NetsetRsp">NetsetRsp</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    The NetsetRsp object with errcode &#x3D;&#x3D; &#39;0&#39; 
+        <a href="#NetsetRsp">NetsetRsp</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="containerPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /container</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">containerPost</span>)</div>
+    <div class="method-notes">容器带宽申请和容器注册</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">containerReq (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; DCOS启动某个容器时调用，设置带宽参数并建立client_ip到container_id的映射  </div>
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#ContainerRsp">ContainerRsp</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    The ContainerRsp object where errCode &#x3D;&#x3D; &#39;0&#39;
+        <a href="#ContainerRsp">ContainerRsp</a>
+    <h4 class="field-label">0</h4>
+    The ContainerRsp object where errCode !&#x3D; &#39;0&#39;
+        <a href="#ContainerRsp">ContainerRsp</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hostIpGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /host/{ip}</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">hostIpGet</span>)</div>
+    <div class="method-notes">Query the bandwidth allocation and QoS settings of a host </div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">ip (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; The ip address of host </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">interval (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; 查询时间间隔 </div><div class="param">count (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; 返回结果个数 </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#ContianerStats">ContianerStats</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    The ContainerStats object
+        <a href="#ContianerStats">ContianerStats</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hostNetsetPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /host/netset</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">hostNetsetPost</span>)</div>
+    <div class="method-notes">动态设置主机带宽和QoS</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">netset (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; 动态设置某个host的带宽 </div>
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#NetsetRsp">NetsetRsp</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    The NetsetRsp object with errcode &#x3D;&#x3D; &#39;0&#39; 
+        <a href="#NetsetRsp">NetsetRsp</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hostPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /host</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">hostPost</span>)</div>
+    <div class="method-notes">主机带宽申请和服务器注册</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">hostReq (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; 服务器启动后调用、注册IP信息  </div>
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#ContainerRsp">ContainerRsp</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    The ContainerRsp object where errCode &#x3D;&#x3D; &#39;0&#39;
+        <a href="#ContainerRsp">ContainerRsp</a>
+  </div> <!-- method -->
+  <hr/>
+
+  <div class="up"><a href="#__Models">Up</a></div>
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h2>Table of Contents</h2>
+  <ol>
+    <li><a href="#BandWidth"><code>BandWidth</code></a></li>
+    <li><a href="#ContainerReq"><code>ContainerReq</code></a></li>
+    <li><a href="#ContainerRsp"><code>ContainerRsp</code></a></li>
+    <li><a href="#ContianerStats"><code>ContianerStats</code></a></li>
+    <li><a href="#NetsetReq"><code>NetsetReq</code></a></li>
+    <li><a href="#NetsetRsp"><code>NetsetRsp</code></a></li>
+  </ol>
+
+  <div class="model">
+    <h3 class="field-label"><a name="BandWidth">BandWidth</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class="field-items">
+      <div class="param">bw_up </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> 上行带宽</div>
+<div class="param">bw_down </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> 下行带宽</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="ContainerReq">ContainerReq</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class="field-items">
+      <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 容器ID</div>
+<div class="param">ip </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 容器ID</div>
+<div class="param">task_id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 任务ID （可选）</div>
+<div class="param">req_bw </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 请求带宽（k/m/g），默认为兆（m）</div>
+<div class="param">max_bw </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 最大带宽（k/m/g），默认为兆（m）</div>
+<div class="param">cls </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Traffic class （0～255）</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="ContainerRsp">ContainerRsp</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class="field-items">
+      <div class="param">client_ip </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 客户端IP</div>
+<div class="param">errcode </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 0表示成功，否则为错误码 或者“出错信息”（字符串）</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="ContianerStats">ContianerStats</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class="field-items">
+      <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 容器ID</div>
+<div class="param">ip </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 容器IP</div>
+<div class="param">req_bw </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 容器请求的带宽</div>
+<div class="param">max_bw </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 容器设置的最大带宽（当前配置的限制带宽）</div>
+<div class="param">cls </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Traffic class</div>
+<div class="param">interval </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> 查询的间隔周期（s/m），默认为秒（s）</div>
+<div class="param">datetime (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 第一个采样的时间戳</div>
+<div class="param">count (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> 流量数据列表 按照interval递增</div>
+<div class="param">bw_info (optional)</div><div class="param-desc"><span class="param-type"><a href="#BandWidth">array[BandWidth]</a></span> 每个时间点的流量信息</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="NetsetReq">NetsetReq</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class="field-items">
+      <div class="param">req_bw </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 请求带宽（k/m/g），默认为兆（m）</div>
+<div class="param">max_bw </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 最大带宽（k/m/g），默认为兆（m）</div>
+<div class="param">cls </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Traffic class （0～255）</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="NetsetRsp">NetsetRsp</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class="field-items">
+      <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 容器ID</div>
+<div class="param">ip </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 容器IP</div>
+<div class="param">new_bw </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 当前分配的带宽</div>
+<div class="param">errcode </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 0表示成功，否则为错误码 或者“出错信息”（字符串）</div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>

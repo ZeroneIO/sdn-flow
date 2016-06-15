@@ -1,0 +1,9 @@
+# Local build binaries
+.DS_Store
+# Emacs backup files
+*~
+*#
+.#*
+# log files
+*.log
+log/*

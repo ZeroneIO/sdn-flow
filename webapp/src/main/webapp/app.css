@@ -1,0 +1,31 @@
+.inforbox {
+	width: 22em;
+	position: absolute;
+	left: 50%;
+	color: blue;
+	margin-left: -11em;
+	background-color: white;
+	border: 1px solid blue;
+	padding: 4px;
+	font-family: sans-serif;
+}
+
+.errorbox {
+	width: 22em;
+	position: absolute;
+	left: 50%;
+	color: red;
+	margin-left: -11em;
+	background-color: white;
+	border: 1px solid red;
+	padding: 4px;
+	font-family: sans-serif
+}
+
+.rec-frame {
+	border: 0px;
+}
+
+.loclink {
+	margin-right: 8px;
+}

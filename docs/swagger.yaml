@@ -1,0 +1,401 @@
+swagger: "2.0"
+
+################################################################################
+#                              API Information                                 #
+################################################################################
+info:
+  version: v1.2
+  title: SDN Flow Control
+  description: |
+    Flow control and traffice monitor for SDN (Open vSwitch) platform.
+
+    ## Limits
+
+    ## Functions
+
+    ## Structure
+
+    ### The response
+
+    #### DATA
+
+    ### JSONP
+    
+  termsOfService: http://zerone.io/about/legal/terms/api    
+
+################################################################################
+#                  Host, Base Path, Schemes and Content Types                  #
+################################################################################
+host: api.zerone.io
+basePath: /g/v1
+schemes:
+  - http
+  - https
+produces:
+  - application/json
+consumes:
+  - application/json
+
+################################################################################
+#                                   Tags                                       #
+################################################################################
+tags:
+  - name: Host
+    description: |
+      Host network traffice in QoS operations
+  - name: Container
+    description: |
+      Network traffic in a docker container:
+
+      **bandwidth_status**: uplink / downlink network bandwidth statistics in 
+      realtime.
+
+      **qos_settings**: QoS settings of network interface (ethernet) which is 
+      binded to container via OVS bridge.
+  - name: Flow
+    description: |
+      OVS flow table settings
+
+      * Default flows.
+      * Filtered flows.
+      * Flows with queue bindings
+  - name: Tags
+
+################################################################################
+#                                  Security                                    #
+################################################################################
+securityDefinitions:
+  oauth:
+    type: oauth2
+    flow: implicit
+    authorizationUrl: https://zerone.io/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=token
+    scopes:
+      basic: |
+       to read any and all data related to a container or host (e.g. flow, qos)
+      container: to create or delete qos settings on a container
+      flow: to get information on a flow
+  key:
+    type: apiKey
+    in: query
+    name: access_token
+security:
+  - oauth:
+    - container
+    - flow
+  - key: []
+
+################################################################################
+#                                   Parameters                                 #
+################################################################################
+parameters:
+  cid:
+    name: cid
+    in: path
+    description: The docker container identifier number
+    type: string
+    required: true
+
+  ip:
+    name: ip
+    in: path
+    description: The ip address of host
+    type: string
+    required: true
+
+################################################################################
+#                                   Paths                                      #
+################################################################################
+paths:    
+  /container:
+    post:
+      security:
+        - key: []
+        - oauth:
+          - basic
+      tags:
+        - Container
+      description: 容器带宽申请和容器注册
+      parameters:
+        - name: containerReq
+          in: body
+          description: |
+            DCOS启动某个容器时调用，设置带宽参数并建立client_ip到container_id的映射
+          required: true
+          schema:
+            $ref: "#/definitions/ContainerReq"
+      responses:
+        200:
+          description: The ContainerRsp object where errCode == '0'
+          schema:
+            $ref: "#/definitions/ContainerRsp"
+        default:
+          description: The ContainerRsp object where errCode != '0'
+          schema:
+            $ref: "#/definitions/ContainerRsp"
+            
+  /container/{cid}:
+    get:
+      tags:
+        - Container
+      description: |
+        Query the bandwidth allocation and QoS settings of a container
+      parameters:
+        - $ref: '#/parameters/cid'
+        - name: interval
+          in: query
+          description: 查询时间间隔
+          required: true
+          type: integer
+        - name: count
+          in: query
+          description: 返回结果个数
+          required: true
+          type: integer
+      responses:
+        200:
+          description: The ContainerStats object
+          schema:
+            $ref: "#/definitions/ContianerStats"
+            
+  /container/netset:
+    post:
+      tags:
+        - Container
+      description: 动态设置容器带宽和QoS
+      parameters:
+        - name: netset
+          description: 动态设置某个container的带宽
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/NetsetReq"             
+      responses:
+        200:
+          description: |
+            The NetsetRsp object with errcode == '0'
+          schema:
+            $ref: "#/definitions/NetsetRsp"
+
+  /container/{cid}/netset:
+    post:
+      tags:
+        - Container
+      description: 动态设置容器带宽和QoS
+      parameters:
+        - $ref: '#/parameters/cid'
+        - name: netset
+          description: 动态设置某个container的带宽
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/NetsetReq"             
+      responses:
+        200:
+          description: |
+            The NetsetRsp object with errcode == '0'
+          schema:
+            $ref: "#/definitions/NetsetRsp"
+        # responses may fall through to errors
+        default:
+          description: |
+            The NetsetRsp object with errcode != '0' | errcode == '{error message}'
+          schema:
+            $ref: "#/definitions/NetsetRsp"        
+                        
+  /host:
+    post:
+      tags:
+        - Host
+      description: 主机带宽申请和服务器注册
+      parameters:
+        - name: hostReq
+          in: body
+          description: |
+            服务器启动后调用、注册IP信息
+          required: true
+          schema:
+            $ref: "#/definitions/ContainerReq"
+      responses:
+        200:
+          description: The ContainerRsp object where errCode == '0'
+          schema:
+            $ref: "#/definitions/ContainerRsp"
+
+  /host/{ip}:
+    get:
+      tags:
+        - Host
+      description: |
+        Query the bandwidth allocation and QoS settings of a host
+      parameters:
+        - $ref: '#/parameters/ip'
+        - name: interval
+          in: query
+          description: 查询时间间隔
+          required: true
+          type: integer
+        - name: count
+          in: query
+          description: 返回结果个数
+          required: true
+          type: integer
+      responses:
+        200:
+          description: The ContainerStats object
+          schema:
+            $ref: "#/definitions/ContianerStats"
+
+  /host/netset:
+    post:
+      tags:
+        - Host
+      description: 动态设置主机带宽和QoS
+      parameters:
+        - name: netset
+          description: 动态设置某个host的带宽
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/NetsetReq"             
+      responses:
+        200:
+          description: |
+            The NetsetRsp object with errcode == '0'
+          schema:
+            $ref: "#/definitions/NetsetRsp"
+
+################################################################################
+#                                 Definitions                                  #
+################################################################################
+# complex objects have schema definitions
+definitions:
+  BandWidth:
+    type: object
+    required:
+      - bw_up
+      - bw_down
+    properties:
+      bw_up: 
+        type: integer          
+        description: 上行带宽
+      bw_down: 
+        type: integer
+        description: 下行带宽
+
+  ContainerReq:
+    type: object
+    required:
+      - id
+      - ip
+      - task_id
+      - req_bw
+      - max_bw
+      - cls
+    properties:
+      id:
+        type: string
+        description: 容器ID
+      ip:
+        type: string
+        description: 容器ID
+      task_id:
+        type: string
+        description: 任务ID （可选）
+      req_bw:
+        type: string
+        description: 请求带宽（k/m/g），默认为兆（m）
+      max_bw:
+        type: string
+        description: 最大带宽（k/m/g），默认为兆（m）
+      cls:
+        type: integer
+        description: Traffic class （0～255）
+
+  ContainerRsp:
+    required:
+      - client_ip
+      - errcode
+    properties:
+      client_ip:
+        type: string 
+        description: 客户端IP
+      errcode:
+        type: string
+        description:  0表示成功，否则为错误码 或者“出错信息”（字符串）
+        
+  NetsetReq:
+    type: object
+    required:
+      - req_bw
+      - max_bw
+      - cls
+    properties:
+      req_bw:
+        type: string
+        description: 请求带宽（k/m/g），默认为兆（m）
+      max_bw:
+        type: string
+        description: 最大带宽（k/m/g），默认为兆（m）
+      cls:
+        type: integer
+        description: Traffic class （0～255）
+                
+  NetsetRsp:
+    required:
+      - id
+      - ip
+      - new_bw
+      - errcode
+    properties:
+      id:
+        type: string 
+        description: 容器ID
+      ip:
+        type: string
+        description: 容器IP
+      new_bw:
+        type: string 
+        description: 当前分配的带宽
+      errcode:
+        type: string
+        description:  0表示成功，否则为错误码 或者“出错信息”（字符串）
+        
+  ContianerStats:
+    required:
+      - id
+      - ip
+      - req_bw
+      - max_bw
+      - cls
+      - interval
+    properties:
+      id:
+        type: string 
+        description: 容器ID
+      ip:
+        type: string
+        description: 容器IP
+      req_bw:
+        type: string 
+        description: 容器请求的带宽
+      max_bw:
+        type: string
+        description: 容器设置的最大带宽（当前配置的限制带宽）
+      cls:
+        type: integer
+        description: Traffic class
+      interval:
+        type: integer
+        description: 查询的间隔周期（s/m），默认为秒（s）
+      datetime:
+        type: string
+        description: 第一个采样的时间戳
+      count:
+        type: integer
+        description: 流量数据列表 按照interval递增
+      bw_info:
+        type: "array"
+        description: 每个时间点的流量信息
+        items:
+          $ref: "#/definitions/BandWidth"
+        uniqueItems: true
